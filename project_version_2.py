@@ -7,9 +7,9 @@ import numpy as np
 class Error(Exception):
     pass
 class Load_Error(Error):
-    pass 
+    pass
 
-def loadA(fileA):
+def loadA(fileA): #loads file A.csv into a nparray
     global a_numpy_array
     #a_file = open("TEST.csv")
     a_file = open("A.csv") 
@@ -17,35 +17,46 @@ def loadA(fileA):
     print "file A"
     print a_numpy_array    
 
-def loadB(fileB):
+def loadB(fileB): #loads file B.csv into a nparray
     global b_numpy_array
     b_file = open("B.csv")
     b_numpy_array = np.genfromtxt(b_file, delimiter = ",")
     print "file B"
-    print b_numpy_array 
-    
+    print b_numpy_array     
 
-def create_list(array):        
+def create_list(array): # converts a numpy array into an array list          
     global list_array
     list_array = list()    
-    for row in array: #iterate through each row
-        for item in row: #iterate through each item of that row
-            list_array.append(int(item)) #convert item into int, add it to thelist
-    
-def square(array,choice):                          
+    for row in array: # iterates thru the array converts item into an int before append
+        for item in row:
+            list_array.append(int(item))
+
+ def idmatrix(size,choice): # creates an identity matrix based on the dimensions passed
+    identity_matrix = [[0]*size for i in range(size) # initialize identity_matrix 
+    for i in range(size): # fills the identity_matrix array 
+        identity_matrix[i][i] = 1
+            for rows in identity_matrix:
+              dummy = 0
+    identity_matrix = np.array(identity_matrix) #converts matrix back to a nparray
+    if choice==3:
+        print "The identity matrix of A is:"
+     else:
+        print "The identity matrix of B is:"
+        print identity_matrix
+              
+def square(array,choice): # verifies the array passed is square and up to 10X10                          
     create_list(array)              
-    No_elements = len(list_array)    
+    No_elements = len(list_array)   
     root = math.sqrt(No_elements)
     print " "
     if int(root + 0.5) ** 2 == No_elements or No_elements > 100:
         size = int(root)
-        square_array = np.array(list_array)#converts list_array into an np array
+        square_array = np.array(list_array) #converts list_array into an np array
         square_array = square_array.reshape(size,size) #reshape matrix to square dimensions        
         if choice in (3,7):            
-            print "file A square identity matrix of ",np.shape(square_array)# print A square matrix               
+            print "file A square identity matrix of ",np.shape(square_array)
         elif choice in (4,8):
-            print "file B square identity matrix of ",np.shape(square_array)# print A square matrix               
-
+            print "file B square identity matrix of ",np.shape(square_array)
         print square_array
         return True
     else:    
@@ -57,14 +68,13 @@ def square(array,choice):
         print array
         return False
 
-def scalar(array,choice,n):    
-    #initilize scalar array 
+def scalar(array,choice,n): # calculates the scalar n times the passed array    
     numOfRow = np.size(array,0)
     numOfCol = np.size(array,1)
-    scalar_array = [[0 for x in range(numOfRow)] for i in range(numOfCol)]    
+    scalar_array = [[0 for x in range(numOfRow)] for i in range(numOfCol)] #initialiaze scalar array
     r = 0
     c = 0
-    for row in array:
+    for row in array: # iterates thru the array and multiplies by n 
         for column in array:
             scalar_array[r][c] = n * array[r][c]
             c = c + 1
@@ -79,56 +89,46 @@ def scalar(array,choice,n):
         print "file B"
         print array
         print "scalar",n,"times B is:"
-    scalar_array = np.array(scalar_array) #converts to np array
+    scalar_array = np.array(scalar_array) 
     print scalar_array
 
-def det(array):    
-    # if given matrix is of order
-    # 2*2 then simply return det
-    # value by cross multiplying
-    # elements of matrix.
+def det(array): # calculates the determinant of passed array   
+    # if given matrix is of order 2*2 then simply return det
+    # value by cross multiplying elements of matrix.
     if(len(array) == 2):
         value = array[0][0] * array[1][1] - array[1][0] * array[0][1]        
-        return value
-    # initialize Sum to zero
-    Sum = 0
-    #loop to traverse each column
-    #of matrix a.
-    for current_column in range(len(array)):
-        # calculating the sign corresponding
-        # to co-factor of that sub matrix.
+        return value    
+    Sum = 0  
+    for current_column in range(len(array)): # loops to traverse each column of matrix array
+        # calculates the sign corresponding to co-factor of that sub matrix.
         sign = (-1) ** (current_column)
-        # calling the function recursily to
-        # get determinant value of
+        # calls the function recursily to get determinant value of
         # sub matrix obtained.
         sub_det = det(getcofactor(array, 0, current_column))
-        # adding the calculated determinant
-        # value of particular column
-        # matrix to total Sum.
+        # adds the calculated determinant value of particular column
+        # into the matrix to total Sum.
         if sub_det == None:
             sub_det = 0        
         Sum += (sign * array[0][current_column] * sub_det)
-    # returning the final Sum
+    # returns the final Sum
     return Sum    
 
-def getcofactor(m, i, j):
+def getcofactor(m, i, j): # subroutine of the determinant to get the cofactor
     return [row[: j] + row[j+1:] for row in (m[: i] + m[i+1:])]
 
-def sumAB(array1,array2):
-    #initilize sum_array and counters 
+def sumAB(array1,array2): # calculates the addition of arrays passed 
     numOfRow = np.size(array1,0)
     numOfCol = np.size(array1,1)
     array_sum = [[0 for x in range(numOfRow)] for i in range(numOfCol)]
     r = 0
-    c = 0
-    #sumation of array A + B 
-    for row in a_numpy_array:      
+    c = 0 
+    for row in a_numpy_array: # loops thru to obtain the sumation  
         for column in b_numpy_array:
             array_sum[r][c] = a_numpy_array[r][c] + b_numpy_array[r][c]
             c = c + 1
         r = r + 1
         c = 0       
-    array_sum = np.array(array_sum) #converts to np array    
+    array_sum = np.array(array_sum)
     print "file A"
     print array1
     print "file B"
@@ -136,16 +136,15 @@ def sumAB(array1,array2):
     print "The addition of A + B is:" 
     print array_sum
 
-def subAB(array1,array2,choice):
+def subAB(array1,array2,choice): # calculates the substraction of passed arrays
     #initilize sub_array and counters
     numOfRow = np.size(array1,0)
     numOfCol = np.size(array1,1)    
     array_sub = [[0 for x in range(numOfRow)] for i in range(numOfCol)]
     r = 0
     c = 0
-    if choice == 8:
-        #substraction array B - A 
-        for row in array1:
+    if choice == 8:   
+        for row in array1: # substracts B - A 
             for column in array2:
                 array_sub[r][c] = array2[r][c] - array1[r][c]
                 c = c + 1
@@ -156,9 +155,8 @@ def subAB(array1,array2,choice):
         print "file B"
         print array2
         print "The subtraction of A - B is:"        
-    elif choice == 9:
-        #substraction array A - B
-        for row in array1:
+    elif choice == 9:        
+        for row in array1: # substracts array A - B 
             for column in array2:
                 array_sub[r][c] = array1[r][c] - array2[r][c]
                 c = c + 1
@@ -172,7 +170,7 @@ def subAB(array1,array2,choice):
     array_sub = np.array(array_sub) #converts to np array
     print array_sub
 
-def multiplyAB(array1,array2,choice):    
+def multiplyAB(array1,array2,choice): # calculates the multiplication of passed arrays 
     r = 0
     c = 0
     if choice == 18:
@@ -212,10 +210,10 @@ def multiplyAB(array1,array2,choice):
         print "file A"
         print array1        
         print "The Multiplication of BA is:"
-    array_mul = np.array(array_mul) #converts to np array
+    array_mul = np.array(array_mul)
     print array_mul
            
-def dimensions(array1,array2,choice):    
+def dimensions(array1,array2,choice): # verifies the dimensions of passed arrays
     print " " 
     if choice in (15,16,17):    
         if np.shape(array1)==np.shape(array2):
@@ -422,26 +420,28 @@ def MainMenu():
         try: 
             choice = int(input("Enter choice: "))   
             print " " 
-            if choice==1:           #load fileA
+            if choice==1:           #loads file A
                 loadA("A.csv")
                 
-            elif choice==2:         #load fileB
+            elif choice==2:         #loads file B
                 loadB("B.csv")
-            #test flag
-            elif a_numpy_array.all() is None or b_numpy_array.all() is None: 
+           
+            elif a_numpy_array.all() is None or b_numpy_array.all() is None: # test flag
                     raise Load_Error
            
-            elif choice==3:         #A-square matrix                
-                square(a_numpy_array,choice)         
+            elif choice==3:         # identity matrix A                
+                if square(a_numpy_array,choice):
+                    idmatrix(dimensions,choice)
 
-            elif choice==4:         #B-square matrix
-                square(b_numpy_array,choice)
-
-            elif choice==5:         #scalar n times A
+            elif choice==4:         # identity matrix B
+                if square(b_numpy_array,choice):
+                    idmatrix(dimensions,choice)
+                       
+            elif choice==5:         # scalar n times A
                 n = int(input("Enter an integer number:"))
                 scalar(a_numpy_array,choice,n)    
 
-            elif choice==6:         #scalar n times B
+            elif choice==6:         # scalar n times B
                 n = int(input("Enter an integer number:"))
                 scalar(b_numpy_array,choice,n)    
             
@@ -483,23 +483,23 @@ def MainMenu():
             elif choice==14:        #integer power B
                 print "insert routine"           
 
-            elif choice==15:         #addition A+B  
+            elif choice==15:         # addition A + B  
                 if dimensions(a_numpy_array,b_numpy_array,choice):
                     sumAB(a_numpy_array,b_numpy_array)
 
-            elif choice==16:         #substraction A-B
+            elif choice==16:         # substraction A - B
                 if dimensions(a_numpy_array,b_numpy_array,choice):
                     subAB(a_numpy_array,b_numpy_array,choice)
 
-            elif choice==17:         #substration B-A
+            elif choice==17:         # substration B - A
                 if dimensions(a_numpy_array,b_numpy_array,choice):
                     subAB(a_numpy_array,b_numpy_array,choice)
            
-            elif choice==18:        #multiplication AB
+            elif choice==18:        # multiplication A X B
                 if dimensions(a_numpy_array,b_numpy_array,choice):
                     multiplyAB(a_numpy_array,b_numpy_array,choice)
 
-            elif choice==19:        #multiplication BA
+            elif choice==19:        # multiplication B X A
                 if dimensions(a_numpy_array,b_numpy_array,choice):
                     multiplyAB(a_numpy_array,b_numpy_array,choice)
 
@@ -526,7 +526,7 @@ def MainMenu():
                 print "Swapping Matrixes"
                 Swap(a_numpy_array, b_numpy_array)
             
-            elif choice==0:         #exit 
+            elif choice==0:         # exit 
                 break
             
             else: 
