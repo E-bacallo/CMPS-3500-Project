@@ -275,6 +275,89 @@ def print_double(array)
   puts puts array.map { |a| a.map { |i| i.to_s.rjust(width)}.join}
 end 
 
+def copy(cop_array,tar_array)
+  cop_rows = cop_array.length
+  cop_cols =  cop_array[0].length 
+  print "Original Arrays:\n", "\n 1st Array:\n"
+  print_double(cop_array)
+  print "\n 2nd Array:\n" 
+  print_double(tar_array) 
+
+  (0..cop_rows-1).each do |i|
+    (0..cop_cols-1).each do |j|
+      tar_array[i][j] = cop_array[i][j]
+    end
+  end
+     
+  print "\nCopied Array:\n"
+  print_double(tar_array)
+end
+
+def swap(arrayA, arrayB)
+  a_rows = arrayA.length
+  a_cols =  arrayA[0].length 
+  b_rows = arrayB.length
+  b_cols = arrayB[0].length
+  temp_array = Array.new(a_rows){Array.new(a_cols,0)}
+  print "Original Arrays:\n", "\n 1st Array:\n"
+  print_double(arrayA)
+  print "\n 2nd Array:\n" 
+  print_double(arrayB) 
+
+  (0..a_rows-1).each do |i|
+    (0..a_cols-1).each do |j|
+      temp_array[i][j] = arrayA[i][j]
+    end
+  end
+
+  arrayA = Array.new(b_rows){Array.new(b_cols,0)}
+
+  (0..b_rows-1).each do |i|
+    (0..b_cols-1).each do |j|
+      arrayA[i][j] = arrayB[i][j]
+    end
+  end
+
+  arrayB = Array.new(a_rows){Array.new(a_cols,0)}
+
+  (0..a_rows-1).each do |i|
+    (0..b_cols-1).each do |j|
+      arrayB[i][j] = temp_array[i][j]
+    end
+  end
+  print "\nSwapped Array:\n 1st Array:\n"
+  print_double(arrayA)
+  print "2nd Array:\n" 
+  print_double(arrayB) 
+
+end
+
+
+def transpose(array)
+  rows = array.length
+  cols =  array[0].length 
+  print "Original Array:\n"
+  print_double(array)
+
+  temp_array = Array.new(rows){Array.new(cols,0)}
+
+  (0..rows-1).each do |i|
+    (0..cols-1).each do |j|
+      temp_array[i][j] = array[i][j]
+    end
+  end
+ 
+  (0..rows-1).each do |i|
+    (0..cols-1).each do |j|
+      array[j][i] = temp_array[i][j]
+    end
+  end    
+
+  print "\nTranspose Array:\n"
+  print_double(array)
+end
+
+
 #Defining MainMenu, interactive matrix calculator's main menu  
 def MainMenu()
   while 1
@@ -341,10 +424,12 @@ def MainMenu()
                #puts "The determinant of B is: ",det(array)
 
            when 9
-             puts "Insert function call here"
+             puts "A Transpose:\n"
+             transpose($arrayA)
 
            when 10
-              puts "Insert function call here"
+              puts "B Transpose:\n"
+              transpose($arrayB)
 
            when 11
               puts "Insert function call here"
@@ -383,14 +468,24 @@ def MainMenu()
              end 
 
            when 20
-              puts "Insert function call here"   
-   
+              puts "Copying A into B: A to B"   
+              copy($arrayA, $arrayB) 
            when 21                      
-              puts "Insert function call here"
+              puts "Copying B into A: B to A"
+              copy($arrayB, $arrayA) 
    
            when 22
-             puts "Insert function call here"
+             puts "Swapping A and B: "
+             swap($arrayA, $arrayB) 
 
+           when 991
+             puts "Printing Array A: \n"
+             print_double($arrayA)
+          
+           when 992
+             puts "Printing Array B: \n" 
+             print_double($arrayB) 
+            
            when 0 
              break        
 
