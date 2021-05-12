@@ -478,10 +478,12 @@ def MainMenu():
                     print "Matrix B is not a Square Matrix:"
             
             elif choice==13:        #integer power A
-                print "insert routine"
+                print "Integer Power Using Matrix A:\n"
+                Integer_power(a_numpy_array)
             
             elif choice==14:        #integer power B
-                print "insert routine"           
+                print "Integer Power Using Matrix B:\n"
+                Integer_power(b_numpy_array)       
 
             elif choice==15:         # addition A + B  
                 if dimensions(a_numpy_array,b_numpy_array,choice):
