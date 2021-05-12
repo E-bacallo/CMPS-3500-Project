@@ -178,10 +178,11 @@ def multiplyAB(array1,array2,choice)
   col1 = array1[0].length
   row2 = array2.length
   col2 = array2[0].length
-  puts row1
-  puts col1
-  puts row2
-  puts col2
+  
+  #puts row1
+  #puts col1
+  #puts row2
+  #puts col2
 
   if choice == 18
     array_mul = Array.new(row1){Array.new(col2,0)} 
@@ -200,6 +201,7 @@ def multiplyAB(array1,array2,choice)
     puts "file B"
     print_double(array2)
     puts "the multiplication of A * B is:"
+    print_double(array_mul)
   end 
   if choice == 19 
     array_mul = Array.new(row2){Array.new(col1,0)}
@@ -218,9 +220,10 @@ def multiplyAB(array1,array2,choice)
     puts "file A"
     print_double(array1)
     puts "the multiplication of B * A is:"
+    print_double(array_mul)
   end
-  print_double(array_mul)
-end 
+end
+
 
 #Defining square matrix method 
 def square(array,option)      
@@ -275,22 +278,28 @@ def print_double(array)
   puts puts array.map { |a| a.map { |i| i.to_s.rjust(width)}.join}
 end 
 
-def copy(cop_array,tar_array)
+def copy(cop_array,tar_array, choice)
   cop_rows = cop_array.length
   cop_cols =  cop_array[0].length 
+  
+  if choice == 1
   print "Original Arrays:\n", "\n 1st Array:\n"
   print_double(cop_array)
   print "\n 2nd Array:\n" 
   print_double(tar_array) 
-
+  end
+  
   (0..cop_rows-1).each do |i|
     (0..cop_cols-1).each do |j|
       tar_array[i][j] = cop_array[i][j]
     end
   end
-     
+
+  if choice == 1
   print "\nCopied Array:\n"
   print_double(tar_array)
+  end
+
 end
 
 def swap(arrayA, arrayB)
@@ -352,9 +361,47 @@ def transpose(array)
       array[j][i] = temp_array[i][j]
     end
   end    
-
   print "\nTranspose Array:\n"
   print_double(array)
+
+end
+
+def interger_power(array, num) 
+  rows = array.length
+  cols = array[0].length 
+  array_power = Array.new(rows){Array.new(cols,0)} 
+  array_temp = Array.new(rows){Array.new(cols,0)}
+  #filling array_power with elements from the input array
+  copy(array, array_temp, 0) 
+  copy(array, array_power, 0) 
+  
+  if num == 2
+    (0..rows-1).each do |i|
+      (0..cols-1).each do |j|
+        (0..rows-1).each do |k|
+          array_power[i][j] += array[i][k] * array_temp[k][j]                                        
+        end 
+      end
+   end  
+    print_double(array_power) 
+  
+  else
+
+  (0..num-1).each do 
+   copy(array_power, array_temp, 0) 
+    (0..rows-1).each do |i|
+     (0..cols-1).each do |j| 
+       (0..rows-1).each do |k|
+       array_power[i][j] = array[i][k] * array_temp[k][j]
+      end
+    end
+   end
+  end
+
+
+  print "\nInteger Power Array to Power:" , num , ":\n"
+  print_double(array_power)  
+  end
 end
 
 
@@ -432,16 +479,28 @@ def MainMenu()
               transpose($arrayB)
 
            when 11
-              puts "Insert function call here"
+             puts "Insert function call here"
 
            when 12
               puts "Insert function call here"
 
-           when 13
-              puts "Insert function call here"
+           when 13 
+             puts "What power for A^n do you request from 1 - 10"
+             num = gets.chomp.to_i
+             while num < 1 || num > 10 
+               puts "Invalid input for num! Must be 1 - 10!: " 
+               num = gets.chomp.to_i
+             end
+             interger_power($arrayA, num) 
 
            when 14
-              puts "Insert function call here"
+             puts "What power for B^n do you request from 1 - 10"
+             num = gets.chomp.to_i
+             while num < 1 || num > 10 
+               puts "Invalid input for num! Must be 1 - 10!: " 
+               num = gets.chomp.to_i
+             end
+             interger_power($arrayB, num)
 
            when 15
              if dimensions($arrayA,$arrayB,choice)
@@ -469,10 +528,10 @@ def MainMenu()
 
            when 20
               puts "Copying A into B: A to B"   
-              copy($arrayA, $arrayB) 
+              copy($arrayA, $arrayB, 1) 
            when 21                      
               puts "Copying B into A: B to A"
-              copy($arrayB, $arrayA) 
+              copy($arrayB, $arrayA, 1) 
    
            when 22
              puts "Swapping A and B: "
