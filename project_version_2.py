@@ -390,6 +390,40 @@ def Inverse(array):
             array_inverse[i][j] = cofactors[i][j]
     return array_inverse
 
+def Integer_power(array): 
+    user_input = input("Enter Desired Power 1-10:\n")
+    try: 
+        test = int(user_input) 
+    except ValueError: 
+        print "\nUser input is not a number/type int!\n"
+
+    while user_input < 1 or user_input >10:
+        print "\nUser input is above 10 or less than 1!\n"
+        user_input = input("\nEnter Desired Power 1-10:\n")
+    
+    #array_copy is now the inputed array
+    if user_input is 1: 
+        print array
+    else:
+        Copy(array, 99)
+    
+        num_col = np.size(array, 1)
+        num_row = np.size(array,0)
+        array_temp = [[0 for x in range(num_row)] for i in range(num_col)]
+        array_temp = np.array(array_temp)
+        #itr row
+        for i in range(num_row):
+            #itr col
+            for j in range(num_col):
+                array_temp[j][i] = array[i][j]
+
+        
+        for count  user_input: 
+            array_temp = multiplyAB(array_temp, array_copy, 0)    
+    
+        print array_temp
+        return 0
+
 def MainMenu():
     global choice
     print " " 
