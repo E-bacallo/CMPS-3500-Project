@@ -426,31 +426,22 @@ def Integer_power(array):
 
 def MainMenu():
     global choice
-    print " " 
-    print "1-load matrix A: [Load A]"
-    print "2-load matrix B: [Load B]"
-    print "3-square matrix A up to 10X10 [A to I]"
-    print "4-square matrix B up to 10X10 [B to I]"
-    print "5-Scalar n times matrix A [n * A] "
-    print "6-Scalar n times matrix B [n * B]"
-    print "7-Determinant of A: [det(A)]"
-    print "8-Determinant of B: [det(B)]"
-    print "9-A Transpose: [AT]"
-    print "10-B Transpose: [BT]"
-    print "11-Inverse of A: A-1"
-    print "12-Inverse of B: [B-1]"
-    print "13-Integer power of A when A is square matrix: [An for 1  n  10]"
-    print "14-Integer power of B when B is square matrix: [Bn for 1  n  10]"
-    print "15-Add A and B: [A + B]"
-    print "16-Substract A from B: [B - A]"
-    print "17-Substract B from A: [A - B]"
-    print "18-Multiply A and B: [AB]"
-    print "19-Multiply B and A: [BA]"
-    print "20-copy A into B: [A to B]"
-    print "21-copy B into A: [B to A]"
-    print "22-swap A and B: [A to B]"
-    print "Enter 0 to exit"
-    while True: 
+    print "                        M A T R I X    C A L C U L A T O R  (Python)   "
+    print "  "
+    print " 1: Load matrix A: [Load A]                               2: Load matrix B: [Load B]"
+    print " 3: Square id matrix A up 10x10: [A to I]                 4: Square id matrix B up to 10x10: [B to I]    "
+    print " 5: Scalar n times matrix A [n * A]                       6: Scalar n times matrix B [n * B]"
+    print " 7: Determinant of A: [det(A)]                            8: Determinant of B: [det(B)]"
+    print " 9: A Transpose: [AT]                                    10: B Transpose: [BT]"
+    print "11: Inverse of A: [A-1]                                  12: Inverse of B: [B-1]"
+    print "13: Int pwr of A, A is a square matrix: [An, 1<=n<=10]   14: Int power of B, B is a square matrix: [B    n, 1<=n<=10]"
+    print "15: Add A and B: [A + B]                                 16: Substract A from B: [B - A]"
+    print "17: Substract B from A: [A - B]                          18: Multiply A and B: [A * B]"
+    print "19: Multiply B and A: [B * A]                            20: Copy A into B: [A to B]"
+    print "21: Copy B into A: [B to A]                              22: Swap A and B: [A to B]"
+    print "23: Print A                                              24: Print B"
+    print "                             ENTER 0 TO EXIT"
+    while True:
         try: 
             choice = int(input("Enter choice: "))   
             print " " 
@@ -517,35 +508,42 @@ def MainMenu():
             
             elif choice==14:        #integer power B
                 print "Integer Power Using Matrix B:\n"
-                Integer_power(b_numpy_array)       
-
-            elif choice==15:         # addition A + B  
+                Integer_power(b_numpy_array)      
+                       
+                       
+            elif choice==15:
+                print A
+            
+            elif choice==16:
+                print B 
+                       
+            elif choice==17:         # addition A + B  
                 if dimensions(a_numpy_array,b_numpy_array,choice):
                     sumAB(a_numpy_array,b_numpy_array)
 
-            elif choice==16:         # substraction A - B
+            elif choice==18:         # substraction A - B
                 if dimensions(a_numpy_array,b_numpy_array,choice):
                     subAB(a_numpy_array,b_numpy_array,choice)
 
-            elif choice==17:         # substration B - A
+            elif choice==19:         # substration B - A
                 if dimensions(a_numpy_array,b_numpy_array,choice):
                     subAB(a_numpy_array,b_numpy_array,choice)
            
-            elif choice==18:        # multiplication A X B
+            elif choice==20:        # multiplication A X B
                 if dimensions(a_numpy_array,b_numpy_array,choice):
                     multiplyAB(a_numpy_array,b_numpy_array,choice)
 
-            elif choice==19:        # multiplication B X A
+            elif choice==21:        # multiplication B X A
                 if dimensions(a_numpy_array,b_numpy_array,choice):
                     multiplyAB(a_numpy_array,b_numpy_array,choice)
 
-            elif choice==20:        #copy A into B 
+            elif choice==22:        #copy A into B 
                 # if(Copy(a_numpy_array,choice).all() == 0):
                 #    print "Error occured in copy routine\n" 
 
                 print "Duplicating Matrix A: " , Copy(a_numpy_array, choice)
 
-            elif choice==21:        #copy B into A
+            elif choice==23:        #copy B into A
                 # if(Copy(b_numpy_array,choice) == 0):
                 #    print "Error occured in copy routine\n" 
 
@@ -558,7 +556,7 @@ def MainMenu():
             elif choice==99: 
                 print MatrixMinor(a_numpy_array, 9, 9)
             
-            elif choice==22:        #swap A and B 
+            elif choice==24:        #swap A and B 
                 print "Swapping Matrixes"
                 Swap(a_numpy_array, b_numpy_array)
             
