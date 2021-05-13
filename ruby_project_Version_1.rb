@@ -7,7 +7,6 @@
 #FILE:  
 #DATE: 5/14/2021
 ###############################
-#
 
 require 'csv'
 require "matrix"
@@ -175,13 +174,8 @@ def multiplyAB(array1,array2,choice)
   col1 = array1[0].length
   row2 = array2.length
   col2 = array2[0].length
-  puts row1
-  puts col1
-  puts row2
-  puts col2
-
   if choice == 20
-    array_mul = Array.new(row2){Array.new(col1,0)} 
+    array_mul = Array.new(row1){Array.new(col2,0)} 
     c = row1.times.map { |x| [] }
     (0..row1-1).each do |i|
       (0..col2-1).each do |j|
@@ -199,7 +193,7 @@ def multiplyAB(array1,array2,choice)
     puts "the multiplication of A * B is:"
   end 
   if choice == 21
-    array_mul = Array.new(row1){Array.new(col2,0)}
+    array_mul = Array.new(row2){Array.new(col1,0)}
     c = row2.times.map { |x| [] }
     puts c
     (0..row2-1).each do |i|
@@ -324,7 +318,6 @@ def MainMenu()
                puts "the identity matrix of A is:"
                idmatrix($row)                            
              end                      
-
            when 4 # identity matrx file B          
              if square($arrayB,choice)
                puts "the identity matrix of B is:"
@@ -338,22 +331,19 @@ def MainMenu()
              puts "enter a integer number "
              n = gets.chomp.to_i
              scalar($arrayB,choice,n)
-
-           when 7            
+           when 7       # determinant of matrix A     
              if square($arrayA,choice)
                puts "The determinant of A is: "
                det($arrayA)           
              end 
-
-           when 8
+           when 8       # determinant of matrix B
              if square($arrayB,choice)
                puts "The determinant of B is: "
                det($arrayB)
              end 
-
            when 9
              puts "Insert function call here"
-
+         
            when 10
               puts "Insert function call here"
 
@@ -369,34 +359,34 @@ def MainMenu()
            when 14
               puts "Insert function call here"
 
-           when 15
+           when 15      # screen output matrix A   
              puts "matrix A"
              print_double($arrayA)
   
-           when 16
+           when 16       # screen output matrx B
              puts "matrix B"
              print_double($arrayB)
 
-           when 17
+           when 17       # addition matrices A + B
              if dimensions($arrayA,$arrayB,choice)
                sumAB($arrayA,$arrayB)
              end 
-           when 18
+           when 18       # substraction matrices B - A 
              if dimensions($arrayA,$arrayB,choice)
                subAB($arrayA,$arrayB,choice)
              end 
 
-           when 19
+           when 19        # matrices substraction A - B
              if dimensions($arrayA,$arrayB,choice)
                subAB($arrayA,$arrayB,choice)
              end 
 
-           when 20
+           when 20         # matrices multiplication A * B
              if dimensions($arrayA,$arrayB,choice)
                multiplyAB($arrayA,$arrayB,choice)
              end 
 
-           when 21
+           when 21         # matrices multiplication B * A
              if dimensions($arrayA,$arrayB,choice)
                multiplyAB($arrayA,$arrayB,choice)
              end 
@@ -419,7 +409,7 @@ def MainMenu()
            end 
      rescue => e 
        puts "An error of type: #{e.class} happened"
-       puts "The message is: #{e.message}. Backtrace:\n#{e.backtrace.join("\n")}"
+       puts "The message is: #{e.message}. Backtrace:\n#{e.backtrace.join("\n")}"       
      end 
   end 
 end 
