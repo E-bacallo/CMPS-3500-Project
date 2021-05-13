@@ -423,24 +423,28 @@ def Integer_power(array):
     
         print array_temp
         return 0
-
 def MainMenu():
     global choice
-    print "                        M A T R I X    C A L C U L A T O R  (Python)   "
-    print "  "
-    print " 1: Load matrix A: [Load A]                               2: Load matrix B: [Load B]"
-    print " 3: Square id matrix A up 10x10: [A to I]                 4: Square id matrix B up to 10x10: [B to I]    "
-    print " 5: Scalar n times matrix A [n * A]                       6: Scalar n times matrix B [n * B]"
-    print " 7: Determinant of A: [det(A)]                            8: Determinant of B: [det(B)]"
-    print " 9: A Transpose: [AT]                                    10: B Transpose: [BT]"
-    print "11: Inverse of A: [A-1]                                  12: Inverse of B: [B-1]"
-    print "13: Int pwr of A, A is a square matrix: [An, 1<=n<=10]   14: Int power of B, B is a square matrix: [B    n, 1<=n<=10]"
-    print "15: Add A and B: [A + B]                                 16: Substract A from B: [B - A]"
-    print "17: Substract B from A: [A - B]                          18: Multiply A and B: [A * B]"
-    print "19: Multiply B and A: [B * A]                            20: Copy A into B: [A to B]"
-    print "21: Copy B into A: [B to A]                              22: Swap A and B: [A to B]"
-    print "23: Print A                                              24: Print B"
-    print "                             ENTER 0 TO EXIT"
+    print "                    M A T R I X    C A L C U L A T O R  (Python)   "
+    print "    Unirary Operations                                        Binary Operations"
+    print "  "                    
+    print "1: Load matrix A: [Load A]                               17: Add A and B: [A + B]"
+    print "2: Load matrix B: [Load B]                               18: Substract A from B: [B - A]"
+    print "3: Square id matrix A up 10x10: [A to I]                 19: Substract B from A: [A - B]"
+    print "4: Square id matrix B up to 10x10: [B to I]              20: Multiply A and B: [A * B]"
+    print "5: Scalar n times matrix A: [nA, n=Int]                  21: Multiply B and A: [B * A]"
+    print "6: Scalar n times matrix B: [nA, n=Int]                  22: copy A into B: [A to B]"
+    print "7: Determinant of A: [det(A)]                            23: Copy B into A: [B to A]"
+    print "8: Determinant of B: [det(B)]                            24: Swap A and B: [A to B]"
+    print "9: A Transpose: [AT]"
+    print "10: B Transpose: [BT]]"
+    print "11: Inverse of A: [A-1]"
+    print "12: Inverse of B: [B-1]"
+    print "13: Int pwr of A, A is an square matrix: [An, 1<=n<=10]"
+    print "14: Int pwr of B, B is an square matrix: [Bn, 1<=n<=10"
+    print "15: Print A" 
+    print "16: Print B:"                      
+    print "                             ENTER 0 TO EXIT  "
     while True:
         try: 
             choice = int(input("Enter choice: "))   
