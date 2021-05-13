@@ -30,8 +30,7 @@ def create_list(array): # converts a numpy array into an array list
     for row in array: # iterates thru the array converts item into an int before append
         for item in row:
             list_array.append(int(item))
-
- def idmatrix(size,choice): # creates an identity matrix based on the dimensions passed
+def idmatrix(size,choice): # creates an identity matrix based on the dimensions passed
     identity_matrix = [[0]*size for i in range(size) # initialize identity_matrix 
     for i in range(size): # fills the identity_matrix array 
         identity_matrix[i][i] = 1
@@ -418,7 +417,7 @@ def Integer_power(array):
                 array_temp[j][i] = array[i][j]
 
         
-        for count  user_input: 
+        for count in user_input: 
             array_temp = multiplyAB(array_temp, array_copy, 0)    
     
         print array_temp
