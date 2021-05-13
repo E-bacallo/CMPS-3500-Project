@@ -1,38 +1,37 @@
 #!/usr/bin/env ruby
 ################################
-#NAME:  
-#ASGT: Project Calculator
-#ORGN: CSU - CMPS 3500 
-#FILE: project.rb 
-#DATE: 
+#NAME: TEAM 9 
+#MEMBERS: Edgar Bacallo, Frankie Sanchez, Rodolfo Velasquez 
+#PROJECT: Matrix Calculator
+#ORGN: CSUB - CMPS 3500 
+#FILE:  
+#DATE: 5/14/2021
 ###############################
 #
 
 require 'csv'
-require 'matrix'
+require "matrix"
 
 #Defining loadA method, loads file A.csv into a 2D matrix
 def loadA()
   begin
     $arrayA = CSV.parse(File.read("A.csv"), converters: :numeric)     
-    puts "file 'A' loaded into arrayA"
+    puts "file 'A.csv' loaded successfully"
     print_double($arrayA)
     rescue StandardError
-      print "file 'A' doesn't exist or it contains non-numeric values"
-  end
-  puts " "
+      print "file 'A.csv' doesn't exist or it contains non-numeric values"
+  end  
 end 
 
 #Defining loadB method, loads file B.csv into a 2D matrix
 def loadB()         
   begin
     $arrayB = CSV.parse(File.read("B.csv"), converters: :numeric)
-    puts "file 'B' loaded into arrayB"  
+    puts "file 'B.csv' loaded successfully"  
     print_double($arrayB) 
     rescue StandardError 
-      print "file 'B' doesn't exist or it contains non-numeric values"
-    end 
-  puts " "
+      print "file 'B.csv' doesn't exist or it contains non-numeric values"
+    end   
 end 
 
 #Definig identity matrix method 
@@ -46,6 +45,7 @@ def idmatrix(size)
   print_double(identity_array)
 end
 
+#Defining scalar n times a matrix method 
 def scalar(array,choice,n)
   row = array.length
   col = array[0].length 
@@ -57,53 +57,48 @@ def scalar(array,choice,n)
   end
   print " "
   if choice == 5
-    puts "file A"
+    puts "matrix A"
     print_double(array)
     puts "scalar #{n} times A is:"    
   elsif choice == 6
-    puts "file B"
+    puts "matrix B"
     print_double(array)
     puts "scalar #{n} times B is:"    
   end 
   print_double(scalar_array)
 end 
 
-=begin
-def det(array)
-  #if given matrix is of order 2*2 then simply return det
-  #value by cross multiplying elements of matrix.
+#Defining determinant of an square matrix method
+def det(array) 
+  a = Marshal.load(Marshal.dump(array))
+  size = a.length
+  last = size - 1
+  #a = to_a 
+  no_pivot = Proc.new{ return 0 }
+  sign = +1
+  pivot = 1
+  size.times do |k|
+    previous_pivot = pivot
+    if (pivot = a[k][k]) == 0
+      switch = (k+1 ... size).find(no_pivot) {|row|
+        a[row][k] != 0
+      }
+      a[switch], a[k] = a[k], a[switch]
+      pivot = a[k][k]
+      sign = -sign
+    end
+    (k+1).upto(last) do |i|
+      ai = a[i]
+      (k+1).upto(last) do |j|        
+        ai[j] =  (pivot * ai[j] - ai[k] * a[k][j]) / previous_pivot
+      end
+    end
+  end
+  d = sign * pivot
+  puts d
+end
 
-  if(len(array) == 2)
-    value = array[0][0] * array[1][1] - array[1][0] * array[0][1]
-    return value
-
-  #initialize Sum to zero
-  Sum = 0
-
-  #loop to traverse each column of matrix a.
-  for current_column in range(len(array))
-    #calculating the sign corresponding to co-factor of that sub matrix.
-    sign = (-1) ** (current_column)
-
-    #calling the function recursily to get determinant value of
-    #sub matrix obtained.
-    
-    sub_det = det(getcofactor(array, 0, current_column))
-    #adding the calculated determinant value of particular column
-    #matrix to total Sum.
-
-    if sub_det == None
-    sub_det = 0
-    Sum += (sign * array[0][current_column] * sub_det)
-
-    #returning the final Sum
-
-    return Sum
-
-def getcofactor(m, i, j)i
-  return [row[: j] + row[j+1:] for row in (m[: i] + m[i+1:])]
-=end 
-
+#Defining addition of two matrices method
 def sumAB(array1,array2)
   #initilize sum_array and counters 
   row = array1.length
@@ -121,14 +116,15 @@ def sumAB(array1,array2)
     c = 0
   end
   puts " "
-  puts "file A"
+  puts "matrix A"
   print_double(array1)
-  puts "file B"
+  puts "matrix B"
   print_double(array2)
   puts "the addition of A + B is: "
   print_double(array_sum)
 end 
 
+#Defining substraction of two matrices method
 def subAB(array1,array2,choice)
   #initilize sub_array and counters
   row = array1.length
@@ -147,9 +143,9 @@ def subAB(array1,array2,choice)
       c = 0
     end
     puts " "
-    puts "file A"
+    puts "matrix A"
     print_double(array1)
-    puts "file B"
+    puts "matrix B"
     print_double(array2)
     puts "the substraction of A - B is: "  
   elsif choice == 17
@@ -163,15 +159,16 @@ def subAB(array1,array2,choice)
       c = 0
     end 
     puts " "
-    puts "file B"
+    puts "matrix B"
     print_double(array2)
-    puts "file A"
+    puts "matrix A"
     print_double(array1)
     puts "the substraction of B - A is: "
   end 
   print_double(array_sub)  
 end 
 
+#Defining multiplication of two matrices method 
 def multiplyAB(array1,array2,choice)   
   #initilize sub_array and counters
   row1 = array1.length
@@ -183,8 +180,8 @@ def multiplyAB(array1,array2,choice)
   puts row2
   puts col2
 
-  if choice == 18
-    array_mul = Array.new(row1){Array.new(col2,0)} 
+  if choice == 20
+    array_mul = Array.new(row2){Array.new(col1,0)} 
     c = row1.times.map { |x| [] }
     (0..row1-1).each do |i|
       (0..col2-1).each do |j|
@@ -195,27 +192,28 @@ def multiplyAB(array1,array2,choice)
       end
     end
     puts " "
-    puts "file A"
+    puts "matrix A"
     print_double(array1)
-    puts "file B"
+    puts "matrix B"
     print_double(array2)
     puts "the multiplication of A * B is:"
   end 
-  if choice == 19 
-    array_mul = Array.new(row2){Array.new(col1,0)}
+  if choice == 21
+    array_mul = Array.new(row1){Array.new(col2,0)}
     c = row2.times.map { |x| [] }
+    puts c
     (0..row2-1).each do |i|
       (0..col1-1).each do |j|
         c[i] << 0
-        (0..row1-1).each do |k|
-          array_mul[i][j] += array1[i][k] * array2[k][j]
+        (0..array2.length).each do |k|
+          array_mul[i][j] += array2[i][k] * array1[k][j]
         end
       end
     end
     puts " "
-    puts "file B"
+    puts "matrix B"
     print_double(array2)
-    puts "file A"
+    puts "matrix A"
     print_double(array1)
     puts "the multiplication of B * A is:"
   end
@@ -223,25 +221,34 @@ def multiplyAB(array1,array2,choice)
 end 
 
 #Defining square matrix method 
-def square(array,option)      
+def square(array,choice)      
   $row = array.length
   $col = array[0].length 
+  if choice == 3 || choice == 7 
+    f = 'A' 
+  elsif choice == 4 || choice == 8 
+    f = 'B'
+  end 
   if $row == $col    
-    puts "file has the same dimensions"        
+    puts "matrix #{f} has the same dimensions (#{$row},#{$col})"        
     print_double(array)  
     return true 
   else   
-    puts "can't proceed file does not have same dimensions"     
+    puts "matrix #{f}"
+    puts print_double(array)
+    puts "can't proceed matrix #{f} does not have same dimensions (#{$row},#{$col})" 
+    print " " 
+    puts
   end 
 end
 
-#Defining dimensions of matrices method
+#Defining dimensions of two matrices method
 def dimensions(array1,array2,choice)  
   rows1 = array1.length
   cols1 = array1[0].length
   rows2 = array2.length
   cols2 = array2[0].length
-  if choice == 15 || choice == 16 || choice == 17
+  if choice == 17 || choice == 18 || choice == 19
     if rows1 == rows2 and cols1 == cols2
       puts "matrices A B are of the same dimensions"
       return true
@@ -249,60 +256,61 @@ def dimensions(array1,array2,choice)
       puts "can't proceed matrices A and B are not of the same dimensions"
       return false
     end
-  elsif choice == 18 
+  elsif choice == 20
     if cols1 == rows2
-      puts "matrices A B can be multiplied" 
+      puts "matrices A and B can be multiplied" 
       return true
     else
-      puts "matrices A B can't be multiplied"
-      puts "B's columns must equal A's rows"
+      puts "matrices A and B can't be multiplied"
+      puts "A's columns must equal B's rows"
       return false
     end 
-  elsif choice == 19
+  elsif choice == 21
     if cols2 == rows1
-      puts "matrices B A can be multiplied"
+      puts cols2
+      puts rows1
+      puts "matrices B and A can be multiplied"
       return true
     else
-      puts "matrices B A can't be multiplied"
-      puts "A's columns must equal B's rows"
+      puts "matrices B and A can't be multiplied"
+      puts "B's columns must equal A's rows"
       return false
     end 
   end 
 end 
 
+#Defining print out to screen method
 def print_double(array)
   width = array.flatten.max.to_s.size + 2
   puts puts array.map { |a| a.map { |i| i.to_s.rjust(width)}.join}
+  print " " 
 end 
 
 #Defining MainMenu, interactive matrix calculator's main menu  
 def MainMenu()
   while 1
-    puts " "
-     puts "What would you like to do?
-     1: Load matrix A: Load A
-     2: Load matrix A: Load B
-     3: Make A and square indentity matrix up to oder 10x10: A to I
-     4: Make A and square indentity matrix up to oder 10x10: A to I
-     5: Scalar n times A: nA where n is an integer
-     6: Scalar n times B: nA where n is an integer
-     7: Determinant of A: det(A)
-     8: Determinant of B: det(B)
-     9: A Transpose: AT
-     10: B Transpose: BT
-     11: Inverse of A: A-1
-     12: Inverse of B: B-1
-     13: Integer power of A when A is an sqaure matrix: An for 1  n  10
-     14: Integer power of B when B is an sqaure matrix: Bn for 1  n  10
-     15: Add A and B: A + B
-     16: Substract A from B: B - A
-     17: Substract B from A: A - B
-     18: Multiply A and B: AB
-     19: Multiply B and A: BA
-     20: copy A into B: A to B
-     21: copy B into A: B to A
-     22: Swap A and B: A to B"  
-     puts "Enter choice: "
+    puts "
+                       M A T R I X  C A L C U L A T O R  (Ruby) 
+    Uninary Operations                                           Binary Operations
+
+ 1: Load matrix A: [Load A]                               17: Add A and B: [A + B]
+ 2: Load matrix B: [Load B]                               18: Substract A from B: [B - A]
+ 3: Square id matrix A up 10x10: [A to I]                 19: Substract B from A: [A - B]
+ 4: Square id matrix B up to 10x10: [B to I]              20: Multiply A and B: [A * B]
+ 5: Scalar n times matrix A: [nA, n=Int]                  21: Multiply B and A: [B * A]
+ 6: Scalar n times matrix B: [nA, n=Int]                  22: copy A into B: [A to B]
+ 7: Determinant of A: [det(A)]                            23: Copy B into A: [B to A]
+ 8: Determinant of B: [det(B)]                            24: Swap A and B: [A to B]
+ 9: A Transpose: [AT]                                        
+10: B Transpose: [BT]]                                
+11: Inverse of A: [A-1] 
+12: Inverse of B: [B-1]
+13: Int pwr of A, A is an square matrix: [An, 1<=n<=10]
+14: Int pwr of B, B is an square matrix: [Bn, 1<=n<=10
+15: Print A
+16: Print B
+             "
+     puts "Input 0 to EXIT. Enter choice:" 
      choice = gets.chomp.to_i
      puts " " 
      begin
@@ -311,13 +319,14 @@ def MainMenu()
              loadA()            
            when 2       #load file B      
              loadB()  
-           when 3       # identity matrx file A             
+           when 3       # identity matrx file A                          
              if square($arrayA,choice)
-                puts "the identity matrix of A is:"            
-                idmatrix($row)              
+               puts "the identity matrix of A is:"
+               idmatrix($row)                            
              end                      
-           when 4 # identity matrx file B
-             if square($arrayB,choice) == true 
+
+           when 4 # identity matrx file B          
+             if square($arrayB,choice)
                puts "the identity matrix of B is:"
                idmatrix($row)
              end 
@@ -331,14 +340,16 @@ def MainMenu()
              scalar($arrayB,choice,n)
 
            when 7            
-             #if dimensions($arrayA,choice)
-              # array = $arrayA.tolist()
-               #puts "The determinant of A is: ",det(array)             
+             if square($arrayA,choice)
+               puts "The determinant of A is: "
+               det($arrayA)           
+             end 
 
            when 8
-             #if dimensions($arrayB,choice)
-              # array = $arrayB.tolist()
-               #puts "The determinant of B is: ",det(array)
+             if square($arrayB,choice)
+               puts "The determinant of B is: "
+               det($arrayB)
+             end 
 
            when 9
              puts "Insert function call here"
@@ -359,36 +370,44 @@ def MainMenu()
               puts "Insert function call here"
 
            when 15
-             if dimensions($arrayA,$arrayB,choice)
-               sumAB($arrayA,$arrayB)
-             end 
+             puts "matrix A"
+             print_double($arrayA)
+  
            when 16
-             if dimensions($arrayA,$arrayB,choice)
-               subAB($arrayA,$arrayB,choice)
-             end 
+             puts "matrix B"
+             print_double($arrayB)
 
            when 17
              if dimensions($arrayA,$arrayB,choice)
+               sumAB($arrayA,$arrayB)
+             end 
+           when 18
+             if dimensions($arrayA,$arrayB,choice)
                subAB($arrayA,$arrayB,choice)
              end 
 
-           when 18
-             if dimensions($arrayA,$arrayB,choice)
-               multiplyAB($arrayA,$arrayB,choice)
-              end 
-
            when 19
+             if dimensions($arrayA,$arrayB,choice)
+               subAB($arrayA,$arrayB,choice)
+             end 
+
+           when 20
              if dimensions($arrayA,$arrayB,choice)
                multiplyAB($arrayA,$arrayB,choice)
              end 
 
-           when 20
+           when 21
+             if dimensions($arrayA,$arrayB,choice)
+               multiplyAB($arrayA,$arrayB,choice)
+             end 
+
+           when 22
               puts "Insert function call here"   
    
-           when 21                      
+           when 23                      
               puts "Insert function call here"
    
-           when 22
+           when 24
              puts "Insert function call here"
 
            when 0 
