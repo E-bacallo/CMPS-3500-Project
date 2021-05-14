@@ -1,11 +1,11 @@
 #!/usr/bin/env ruby
 ################################
-#NAME: TEAM 9 
+#NAME:    TEAM 9 
 #MEMBERS: Edgar Bacallo, Frankie Sanchez, Rodolfo Velasquez 
-#PROJECT: Matrix Calculator
-#ORGN: CSUB - CMPS 3500 
-#FILE:  
-#DATE: 5/14/2021
+#PROJECT: Matrix Calculator / Ruby
+#ORGN:    CSUB - CMPS 3500 
+#FILE:    ruby_project_Version_1.rb
+#DATE:    5/14/2021
 ###############################
 
 require 'csv'
