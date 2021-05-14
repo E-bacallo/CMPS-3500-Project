@@ -1,36 +1,32 @@
 #!/usr/bin/env ruby
 ################################
-#NAME: TEAM 9 
+#NAME:    TEAM 9 
 #MEMBERS: Edgar Bacallo, Frankie Sanchez, Rodolfo Velasquez 
-#PROJECT: Matrix Calculator
-#ORGN: CSUB - CMPS 3500 
-#FILE:  
-#DATE: 5/14/2021
+#PROJECT: Matrix Calculator / Ruby
+#ORGN:    CSUB - CMPS 3500 
+#FILE:    ruby_project_Version_1.rb
+#DATE:    5/14/2021
 ###############################
 
 require 'csv'
 require "matrix"
 
 #Defining loadA method, loads file A.csv into a 2D matrix
-def loadA()
+def loadA(fileNameA)
   begin
-    $arrayA = CSV.parse(File.read("A.csv"), converters: :numeric)     
-    puts "file 'A.csv' loaded successfully"
-    print_double($arrayA)
+    $arrayA = CSV.parse(File.read(fileNameA), converters: :numeric)        
     rescue StandardError
-      print "file 'A.csv' doesn't exist or it contains non-numeric values"
+      print "file #{fileNameA} doesn't exist"
   end  
 end 
 
 #Defining loadB method, loads file B.csv into a 2D matrix
-def loadB()         
+def loadB(fileNameB)         
   begin
-    $arrayB = CSV.parse(File.read("B.csv"), converters: :numeric)
-    puts "file 'B.csv' loaded successfully"  
-    print_double($arrayB) 
+    $arrayB = CSV.parse(File.read(fileNameB), converters: :numeric)  
     rescue StandardError 
-      print "file 'B.csv' doesn't exist or it contains non-numeric values"
-    end  
+      print "file #{fileNameB} doesn't exist"    
+    end   
 end 
 
 #Definig identity matrix method 
@@ -44,7 +40,6 @@ def idmatrix(size)
   print_double(identity_array)
 end
 
-
 #Defining scalar n times a matrix method 
 def scalar(array,choice,n)
   row = array.length
@@ -56,11 +51,11 @@ def scalar(array,choice,n)
     end 
   end
   print " "
-  if choice == 5
+  if choice == '5'
     puts "matrix A"
     print_double(array)
     puts "scalar #{n} times A is:"    
-  elsif choice == 6
+  elsif choice == '6'
     puts "matrix B"
     print_double(array)
     puts "scalar #{n} times B is:"    
@@ -73,7 +68,6 @@ def det(array)
   a = Marshal.load(Marshal.dump(array))
   size = a.length
   last = size - 1
-  #a = to_a 
   no_pivot = Proc.new{ return 0 }
   sign = +1
   pivot = 1
@@ -99,7 +93,6 @@ def det(array)
 end
 
 #Defining addition of two matrices method
-
 def sumAB(array1,array2)
   #initilize sum_array and counters 
   row = array1.length
@@ -134,7 +127,7 @@ def subAB(array1,array2,choice)
   r = 0
   c = 0
   #sustraction of array B - A
-  if choice == 18
+  if choice == '18'
     array1.each do |row|
       array2.each do |col|
         array_sub[r][c] = array1[r][c] - array2[r][c]
@@ -149,7 +142,7 @@ def subAB(array1,array2,choice)
     puts "matrix B"
     print_double(array2)
     puts "the substraction of A - B is: "  
-  elsif choice == 19
+  elsif choice == '19'
     #sustraction of array A - B
     array2.each do |row|
       array1.each do |col|
@@ -176,7 +169,7 @@ def multiplyAB(array1,array2,choice)
   col1 = array1[0].length
   row2 = array2.length
   col2 = array2[0].length
-  if choice == 20
+  if choice == '20'
     array_mul = Array.new(row1){Array.new(col2,0)} 
     c = row1.times.map { |x| [] }
     (0..row1-1).each do |i|
@@ -194,7 +187,7 @@ def multiplyAB(array1,array2,choice)
     print_double(array2)
     puts "the multiplication of A * B is:"
   end 
-  if choice == 21
+  if choice == '21'
     array_mul = Array.new(row2){Array.new(col1,0)}
     c = row2.times.map { |x| [] }    
     (0..row2-1).each do |i|
@@ -219,9 +212,9 @@ end
 def square(array,choice)      
   $row = array.length
   $col = array[0].length 
-  if choice == 3 || choice == 7 
+  if choice == '3' || choice == '7' 
     f = 'A' 
-  elsif choice == 4 || choice == 8 
+  elsif choice == '4' || choice == '8' 
     f = 'B'
   end 
   if $row == $col    
@@ -238,13 +231,12 @@ def square(array,choice)
 end
 
 #Defining dimensions of two matrices method
-
 def dimensions(array1,array2,choice)  
   rows1 = array1.length
   cols1 = array1[0].length
   rows2 = array2.length
   cols2 = array2[0].length
-  if choice == 17 || choice == 18 || choice == 19
+  if choice == '17' || choice == '18' || choice == '19'
     if rows1 == rows2 and cols1 == cols2
       puts "matrices A B are of the same dimensions"
       return true
@@ -252,7 +244,7 @@ def dimensions(array1,array2,choice)
       puts "can't proceed matrices A and B are not of the same dimensions"
       return false
     end
-  elsif choice == 20
+  elsif choice == '20'
     if cols1 == rows2
       puts "matrices A and B can be multiplied" 
       return true
@@ -261,7 +253,7 @@ def dimensions(array1,array2,choice)
       puts "A's columns must equal B's rows"
       return false
     end 
-  elsif choice == 21
+  elsif choice == '21'
     if cols2 == rows1
       puts cols2
       puts rows1
@@ -278,7 +270,7 @@ end
 def copy(cop_array,tar_array, choice)
   cop_rows = cop_array.length
   cop_cols =  cop_array[0].length 
-  if choice == 1
+  if choice == '22'
   print "Original Arrays:\n", "\n 1st Array:\n"
   print_double(cop_array)
   print "\n 2nd Array:\n" 
@@ -289,7 +281,7 @@ def copy(cop_array,tar_array, choice)
       tar_array[i][j] = cop_array[i][j]
     end
   end
-  if choice == 1
+  if choice == '23'
   print "\nCopied Array:\n"
   print_double(tar_array)
   end
@@ -464,67 +456,67 @@ def MainMenu()
 16: Print B
              "
      puts "Input 0 to EXIT. Enter choice:" 
-     choice = gets.chomp.to_i
+     choice = gets.chomp.to
      puts " " 
      begin
        case choice
-           when 1       #load file A             
-             loadA() 
-         
-           when 2       #load file B      
-             loadB() 
-         
-           when 3       # identity matrx file A                          
-             if square($arrayA,choice)
-               puts "the identity matrix of A is:"
-               idmatrix($row)                            
-             end     
-         
-           when 4 # identity matrx file B          
-             if square($arrayB,choice)
-               puts "the identity matrix of B is:"
-               idmatrix($row)
-             end
-         
-           when 5       # scalar n times file A
-             puts "enter a integer number "
-             n = gets.chomp.to_i
-             scalar($arrayA,choice,n)
-         
-           when 6       # scalar n times file A
+          when 1       #load file A             
+          puts "enter file A: "
+          fileNameA = gets.chomp 
+          if loadA(fileNameA)
+            puts "file #{fileNameA} loaded successfully"
+          end
+          when '2'       #load file B
+          puts "enter file B: "
+          fileNameB = gets.chomp 
+          if loadB(fileNameB)
+            puts "file #{fileNameB} loaded successfully"
+          end      
+          when '3'       # identity matrx file A                          
+          if square($arrayA,choice) 
+            puts "the identity matrix of A is:"
+            idmatrix($row)                            
+          end                      
+          when '4' # identity matrx file B          
+            if square($arrayB,choice)
+              puts "the identity matrix of B is:"
+              idmatrix($row)
+            end 
+          when '5'       # scalar n times file A
+            puts "enter a integer number "
+            n = gets.chomp.to_i
+            scalar($arrayA,choice,n)
+          when '6'       # scalar n times file A
              puts "enter a integer number "
              n = gets.chomp.to_i
              scalar($arrayB,choice,n)
-
-           when 7       # determinant of matrix A     
+          when '7'       # determinant of matrix A     
              if square($arrayA,choice)
                puts "The determinant of A is: "
                det($arrayA)           
              end 
-         
-           when 8       # determinant of matrix B
+           when '8'       # determinant of matrix B
              if square($arrayB,choice)
                puts "The determinant of B is: "
                det($arrayB)
-             end 
-         
-           when 9
+             end       
+           when '9'
              puts "A Transpose:\n"
              transpose($arrayA)
 
-           when 10
+           when '10'
               puts "B Transpose:\n"
               transpose($arrayB)
 
-           when 11
+           when '11'
              puts "Matrix A Inverse: "
              inverse($arrayA) 
 
-           when 12
+           when '12'
              puts "Matrix B Inverse:"
              inverse($arrayB) 
 
-           when 13 
+           when '13'
              puts "What power for A^n do you request from 1 - 10"
              num = gets.chomp.to_i
              while num < 1 || num > 10 
@@ -533,7 +525,7 @@ def MainMenu()
              end
              interger_power($arrayA, num) 
 
-           when 14
+           when '14'
              puts "What power for B^n do you request from 1 - 10"
              num = gets.chomp.to_i
              while num < 1 || num > 10 
@@ -542,61 +534,62 @@ def MainMenu()
              end
              interger_power($arrayB, num)
 
-           when 15      # screen output matrix A   
+           when '15      # screen output matrix A   '
              puts "matrix A"
              print_double($arrayA)
   
-           when 16       # screen output matrx B
+           when '16'       # screen output matrx B
              puts "matrix B"
              print_double($arrayB)
 
-           when 17       # addition matrices A + B
+           when '17'      # addition matrices A + B
              if dimensions($arrayA,$arrayB,choice)
                sumAB($arrayA,$arrayB)
              end 
          
-           when 18       # substraction matrices B - A 
+           when '18'       # substraction matrices B - A 
              if dimensions($arrayA,$arrayB,choice)
                subAB($arrayA,$arrayB,choice)
              end  
          
-           when 19        # matrices substraction A - B
+           when '19'        # matrices substraction A - B
              if dimensions($arrayA,$arrayB,choice)
                subAB($arrayA,$arrayB,choice)
              end 
 
-           when 20         # matrices multiplication A * B
+           when '20'         # matrices multiplication A * B
              if dimensions($arrayA,$arrayB,choice)
                multiplyAB($arrayA,$arrayB,choice)
              end 
 
-           when 21         # matrices multiplication B * A
+           when '21'         # matrices multiplication B * A
              if dimensions($arrayA,$arrayB,choice)
                multiplyAB($arrayA,$arrayB,choice)
              end 
 
-           when 22
+           when '22'
               puts "Copying A into B: A to B"   
               copy($arrayA, $arrayB, 1) 
          
-           when 23                      
+           when '23'                      
               puts "Copying B into A: B to A"
               copy($arrayB, $arrayA, 1) 
    
-           when 24
+           when '24'
              puts "Swapping A and B: "
              swap($arrayA, $arrayB) 
          
-           when 0 
-             break        
+           when '0'
+             break       
 
            else              
-             puts "Invalid selection.Enter 1-22 0 to exit"                      
-             MainMenu()
-           end 
-     rescue => e 
-       puts "An error of type: #{e.class} happened"
-       puts "The message is: #{e.message}. Backtrace:\n#{e.backtrace.join("\n")}"       
+             puts "Invalid selection.Enter 1-24 or 0 to EXIT"  
+           end  
+     rescue ArgumentError
+       puts "can't be processed it contains invalid entries or non-numeric values"
+     
+     rescue NoMethodError
+       puts "Error: Please, load matrix or matrices"           
      end 
   end 
 end 
