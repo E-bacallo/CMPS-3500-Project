@@ -474,7 +474,7 @@ def MainMenu()
      puts " " 
      begin
        case choice
-          when 1       #load file A             
+          when '1'       #load file A             
           puts "enter file A:     <0 to cancel> "
           fileNameA = gets.chomp 
           if loadA(fileNameA)
@@ -552,7 +552,7 @@ def MainMenu()
              end
              interger_power($arrayB, num)
 
-           when '15      # screen output matrix A   '
+           when '15'      # screen output matrix A   '
              puts "matrix A"
              print_double($arrayA)
   
