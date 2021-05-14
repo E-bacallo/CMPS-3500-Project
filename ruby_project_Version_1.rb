@@ -17,7 +17,14 @@ def loadA(fileNameA)
     $arrayA = CSV.parse(File.read(fileNameA), converters: :numeric)        
     rescue StandardError
       print "file #{fileNameA} doesn't exist"
-  end  
+  else 
+    width = $arrayA.flatten.max.to_s.size + 2
+    if $arrayA.map { |a| a.map { |i| i.to_s.rjust(width)}.join}
+      return true
+    else
+      return false    
+    end  
+  end 
 end 
 
 #Defining loadB method, loads file B.csv into a 2D matrix
@@ -26,7 +33,14 @@ def loadB(fileNameB)
     $arrayB = CSV.parse(File.read(fileNameB), converters: :numeric)  
     rescue StandardError 
       print "file #{fileNameB} doesn't exist"    
-    end   
+  else 
+    width = $arrayB.flatten.max.to_s.size + 2
+    if $arrayB.map { |a| a.map { |i| i.to_s.rjust(width)}.join}
+      return true
+    else
+      return false
+    end 
+  end   
 end 
 
 #Definig identity matrix method 
@@ -456,21 +470,25 @@ def MainMenu()
 16: Print B
              "
      puts "Input 0 to EXIT. Enter choice:" 
-     choice = gets.chomp.to
+     choice = gets.chomp
      puts " " 
      begin
        case choice
           when 1       #load file A             
-          puts "enter file A: "
+          puts "enter file A:     <0 to cancel> "
           fileNameA = gets.chomp 
           if loadA(fileNameA)
             puts "file #{fileNameA} loaded successfully"
-          end
+          else
+            puts "file #{fileNameA} can't be loaded it contains invalid entries or non-numeric values"
+          end         
           when '2'       #load file B
-          puts "enter file B: "
+          puts "enter file B:     <0 to cancel>"
           fileNameB = gets.chomp 
           if loadB(fileNameB)
             puts "file #{fileNameB} loaded successfully"
+          else 
+             puts "file #{fileNameB} can't be loaded it contains invalid entries or non-numeric values"
           end      
           when '3'       # identity matrx file A                          
           if square($arrayA,choice) 
@@ -585,9 +603,7 @@ def MainMenu()
            else              
              puts "Invalid selection.Enter 1-24 or 0 to EXIT"  
            end  
-     rescue ArgumentError
-       puts "can't be processed it contains invalid entries or non-numeric values"
-     
+       
      rescue NoMethodError
        puts "Error: Please, load matrix or matrices"           
      end 
