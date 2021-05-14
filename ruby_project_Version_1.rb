@@ -132,10 +132,10 @@ def subAB(array1,array2,choice)
   r = 0
   c = 0
   #sustraction of array B - A
-  if choice == 16
+  if choice == 18
     array1.each do |row|
       array2.each do |col|
-        array_sub[r][c] = array2[r][c] - array1[r][c]
+        array_sub[r][c] = array1[r][c] - array2[r][c]
         c = c + 1
       end
       r = r + 1
@@ -147,11 +147,11 @@ def subAB(array1,array2,choice)
     puts "matrix B"
     print_double(array2)
     puts "the substraction of A - B is: "  
-  elsif choice == 17
+  elsif choice == 19
     #sustraction of array A - B
     array2.each do |row|
       array1.each do |col|
-        array_sub[r][c] = array1[r][c] - array2[r][c]
+        array_sub[r][c] = array2[r][c] - array1[r][c]
         c = c + 1
       end
       r = r + 1
@@ -194,12 +194,11 @@ def multiplyAB(array1,array2,choice)
   end 
   if choice == 21
     array_mul = Array.new(row2){Array.new(col1,0)}
-    c = row2.times.map { |x| [] }
-    puts c
+    c = row2.times.map { |x| [] }    
     (0..row2-1).each do |i|
       (0..col1-1).each do |j|
         c[i] << 0
-        (0..array2.length).each do |k|
+        (0..row1-1).each do |k|
           array_mul[i][j] += array2[i][k] * array1[k][j]
         end
       end
