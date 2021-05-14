@@ -30,7 +30,7 @@ def loadB()
     print_double($arrayB) 
     rescue StandardError 
       print "file 'B.csv' doesn't exist or it contains non-numeric values"
-    end   
+    end  
 end 
 
 #Definig identity matrix method 
@@ -43,6 +43,7 @@ def idmatrix(size)
   end
   print_double(identity_array)
 end
+
 
 #Defining scalar n times a matrix method 
 def scalar(array,choice,n)
@@ -98,6 +99,7 @@ def det(array)
 end
 
 #Defining addition of two matrices method
+
 def sumAB(array1,array2)
   #initilize sum_array and counters 
   row = array1.length
@@ -236,6 +238,7 @@ def square(array,choice)
 end
 
 #Defining dimensions of two matrices method
+
 def dimensions(array1,array2,choice)  
   rows1 = array1.length
   cols1 = array1[0].length
@@ -271,6 +274,163 @@ def dimensions(array1,array2,choice)
     end 
   end 
 end 
+
+def copy(cop_array,tar_array, choice)
+  cop_rows = cop_array.length
+  cop_cols =  cop_array[0].length 
+  if choice == 1
+  print "Original Arrays:\n", "\n 1st Array:\n"
+  print_double(cop_array)
+  print "\n 2nd Array:\n" 
+  print_double(tar_array) 
+  end
+  (0..cop_rows-1).each do |i|
+    (0..cop_cols-1).each do |j|
+      tar_array[i][j] = cop_array[i][j]
+    end
+  end
+  if choice == 1
+  print "\nCopied Array:\n"
+  print_double(tar_array)
+  end
+end
+
+def swap(arrayA, arrayB)
+  a_rows = arrayA.length
+  a_cols =  arrayA[0].length 
+  b_rows = arrayB.length
+  b_cols = arrayB[0].length
+  temp_array = Array.new(a_rows){Array.new(a_cols,0)}
+  print "Original Arrays:\n", "\n 1st Array:\n"
+  print_double(arrayA)
+  print "\n 2nd Array:\n" 
+  print_double(arrayB) 
+  (0..a_rows-1).each do |i|
+    (0..a_cols-1).each do |j|
+      temp_array[i][j] = arrayA[i][j]
+    end
+  end
+  arrayA = Array.new(b_rows){Array.new(b_cols,0)}
+  (0..b_rows-1).each do |i|
+    (0..b_cols-1).each do |j|
+      arrayA[i][j] = arrayB[i][j]
+    end
+  end
+  arrayB = Array.new(a_rows){Array.new(a_cols,0)}
+  (0..a_rows-1).each do |i|
+    (0..b_cols-1).each do |j|
+      arrayB[i][j] = temp_array[i][j]
+    end
+  end
+  print "\nSwapped Array:\n 1st Array:\n"
+  print_double(arrayA)
+  print "2nd Array:\n" 
+  print_double(arrayB) 
+end
+
+def transpose(array)
+  rows = array.length
+  cols =  array[0].length 
+  print "Original Array:\n"
+  print_double(array)
+  temp_array = Array.new(rows){Array.new(cols,0)}
+  (0..rows-1).each do |i|
+    (0..cols-1).each do |j|
+      temp_array[i][j] = array[i][j]
+    end
+  end
+  (0..rows-1).each do |i|
+    (0..cols-1).each do |j|
+      array[j][i] = temp_array[i][j]
+    end
+  end    
+  print "\nTranspose Array:\n"
+  print_double(array)
+end
+
+def interger_power(array, num) 
+  rows = array.length
+  cols = array[0].length 
+  array_power = Array.new(rows){Array.new(cols,0)} 
+  array_temp = Array.new(rows){Array.new(cols,0)}
+  #filling array_power with elements from the input array
+  copy(array, array_temp, 0) 
+  copy(array, array_power, 0) 
+  if num == 2
+    (0..rows-1).each do |i|
+      (0..cols-1).each do |j|
+        (0..rows-1).each do |k|
+          array_power[i][j] += array[i][k] * array_temp[k][j]                                        
+        end 
+      end
+   end  
+    print_double(array_power) 
+  else
+  (0..num-1).each do 
+   copy(array_power, array_temp, 0) 
+    (0..rows-1).each do |i|
+     (0..cols-1).each do |j| 
+       (0..rows-1).each do |k|
+       array_power[i][j] = array[i][k] * array_temp[k][j]
+      end
+    end
+   end
+  end
+  print "\nInteger Power Array to Power:" , num , ":\n"
+  print_double(array_power)  
+  end
+end
+
+def inverse(array)
+  det_num = det(array, 0)
+  rows = array.length
+  cols = array[0].length
+  array_inverse = Array.new(rows){Array.new(cols,0)}
+  array_cofactors = Array.new(rows){Array.new(cols,0)}
+  if rows == 2 and cols == 2 
+    return [[array[1][1]/det_num , -1*array[0][1]/det_num],
+            [-1*array[1][0]/det_num, array[0][0]/det_num]]
+  else 
+    a = Marshal.load(Marshal.dump(array))
+    size = a.length
+    last = size - 1
+    no_pivot = Proc.new{ return 0 }
+    pivot = 1
+    size.times do |k|
+      previous_pivot = pivot
+      if (pivot = a[k][k]) == 0
+        switch = (k+1 ... size).find(no_pivot) {|row|
+          a[row][k] != 0
+        }
+        a[switch], a[k] = a[k], a[switch]
+        pivot = a[k][k]
+      end
+      (k+1).upto(last) do |i|
+        ai = a[i]
+        (k+1).upto(last) do |j|
+          ai[j] = (pivot * ai[j] - ai[k] * a[k][j]) / previous_pivot
+        end
+      end
+    end
+  end
+  # array_inverse = array_inverse.flatten.collect{|arr| arr.tap{|v| v.to_f}}
+  (0..rows-1).each do |i|
+    (0..cols-1).each do |j|
+      array_inverse[i][j] = a[i][j] / det_num
+    end
+  end
+  puts "Determinent" 
+  puts det_num
+  puts " cofactors" 
+  print_double(a) 
+  puts "inverse:\n"
+  print_double(array_inverse)
+  puts " test:" 
+  puts "a[0][0]: ", a[0][0], " / det_num: ", det_num 
+  puts a[0][0] / det_num
+  #puts "a:\n"
+  #print_double(a)
+end
 
 #Defining print out to screen method
 def print_double(array)
@@ -309,54 +469,78 @@ def MainMenu()
      begin
        case choice
            when 1       #load file A             
-             loadA()            
+             loadA() 
+         
            when 2       #load file B      
-             loadB()  
+             loadB() 
+         
            when 3       # identity matrx file A                          
              if square($arrayA,choice)
                puts "the identity matrix of A is:"
                idmatrix($row)                            
-             end                      
+             end     
+         
            when 4 # identity matrx file B          
              if square($arrayB,choice)
                puts "the identity matrix of B is:"
                idmatrix($row)
-             end 
+             end
+         
            when 5       # scalar n times file A
              puts "enter a integer number "
              n = gets.chomp.to_i
              scalar($arrayA,choice,n)
+         
            when 6       # scalar n times file A
              puts "enter a integer number "
              n = gets.chomp.to_i
              scalar($arrayB,choice,n)
+
            when 7       # determinant of matrix A     
              if square($arrayA,choice)
                puts "The determinant of A is: "
                det($arrayA)           
              end 
+         
            when 8       # determinant of matrix B
              if square($arrayB,choice)
                puts "The determinant of B is: "
                det($arrayB)
              end 
-           when 9
-             puts "Insert function call here"
          
+           when 9
+             puts "A Transpose:\n"
+             transpose($arrayA)
+
            when 10
-              puts "Insert function call here"
+              puts "B Transpose:\n"
+              transpose($arrayB)
 
            when 11
-              puts "Insert function call here"
+             puts "Matrix A Inverse: "
+             inverse($arrayA) 
 
            when 12
-              puts "Insert function call here"
+             puts "Matrix B Inverse:"
+             inverse($arrayB) 
 
-           when 13
-              puts "Insert function call here"
+           when 13 
+             puts "What power for A^n do you request from 1 - 10"
+             num = gets.chomp.to_i
+             while num < 1 || num > 10 
+               puts "Invalid input for num! Must be 1 - 10!: " 
+               num = gets.chomp.to_i
+             end
+             interger_power($arrayA, num) 
 
            when 14
-              puts "Insert function call here"
+             puts "What power for B^n do you request from 1 - 10"
+             num = gets.chomp.to_i
+             while num < 1 || num > 10 
+               puts "Invalid input for num! Must be 1 - 10!: " 
+               num = gets.chomp.to_i
+             end
+             interger_power($arrayB, num)
 
            when 15      # screen output matrix A   
              puts "matrix A"
@@ -370,11 +554,12 @@ def MainMenu()
              if dimensions($arrayA,$arrayB,choice)
                sumAB($arrayA,$arrayB)
              end 
+         
            when 18       # substraction matrices B - A 
              if dimensions($arrayA,$arrayB,choice)
                subAB($arrayA,$arrayB,choice)
-             end 
-
+             end  
+         
            when 19        # matrices substraction A - B
              if dimensions($arrayA,$arrayB,choice)
                subAB($arrayA,$arrayB,choice)
@@ -391,14 +576,17 @@ def MainMenu()
              end 
 
            when 22
-              puts "Insert function call here"   
-   
+              puts "Copying A into B: A to B"   
+              copy($arrayA, $arrayB, 1) 
+         
            when 23                      
-              puts "Insert function call here"
+              puts "Copying B into A: B to A"
+              copy($arrayB, $arrayA, 1) 
    
            when 24
-             puts "Insert function call here"
-
+             puts "Swapping A and B: "
+             swap($arrayA, $arrayB) 
+         
            when 0 
              break        
 
